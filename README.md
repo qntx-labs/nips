@@ -1,302 +1,302 @@
 # NIPs
 
-NIPs stand for **Nostr Implementation Possibilities**.
+NIP 是 **Nostr Implementation Possibilities** 的缩写。
 
-They exist to document what may be implemented by [Nostr](https://github.com/nostr-protocol/nostr)-compatible _relay_ and _client_ software.
+它们用于记录兼容 [Nostr](https://github.com/nostr-protocol/nostr) 的 _relay_ 和 _client_ 软件可以实现的内容。
 
-NIPs listed here are not a protocol checklist. Nothing forces any software to implement any NIP. Each app picks the subset relevant to its use case. Don't implement something just because it exists in this repo. Other standards and NIPs may exist outside this repository (e.g. as pull requests) and may already be deployed in the wild -- they should also be considered for implementation.
-
----
-
-- [List](#list)
-- [Event Kinds](#event-kinds)
-- [Message Types](#message-types)
-  - [Client to Relay](#client-to-relay)
-  - [Relay to Client](#relay-to-client)
-- [Criteria for acceptance of NIPs](#criteria-for-acceptance-of-nips-in-this-repository)
-- [Is this repository a centralizing factor?](#is-this-repository-a-centralizing-factor)
-- [How this repository works](#how-this-repository-works)
-- [License](#license)
+这里列出的 NIP 不是一份协议清单。没有任何东西强制任何软件实现某个 NIP。每个应用都会选择与自身用例相关的子集。不要仅仅因为某个东西存在于这个仓库中就去实现它。其他标准和 NIP 也可能存在于本仓库之外，例如以 pull request 的形式存在，并且可能已经在实际环境中部署；实现时也应该考虑它们。
 
 ---
 
-## List
+- [列表](#列表)
+- [事件种类](#事件种类)
+- [消息类型](#消息类型)
+  - [Client 到 Relay](#client-到-relay)
+  - [Relay 到 Client](#relay-到-client)
+- [本仓库接收 NIP 的标准](#本仓库接收-nip-的标准)
+- [这个仓库是中心化因素吗？](#这个仓库是中心化因素吗)
+- [这个仓库如何运作](#这个仓库如何运作)
+- [许可证](#许可证)
 
-- [NIP-01: Basic protocol flow description](01.md)
-- [NIP-02: Follow List](02.md)
-- ~~[NIP-03: OpenTimestamps Attestations for Events](03.md) --- **unrecommended**: vulnerable to one specific attack, needs update~~
-- ~~[NIP-04: Encrypted Direct Message](04.md) --- **unrecommended**: deprecated in favor of [NIP-17](17.md)~~
-- [NIP-05: Mapping Nostr keys to DNS-based internet identifiers](05.md)
-- ~~[NIP-06: Basic key derivation from mnemonic seed phrase](06.md) --- **unrecommended**: prefer a single nsec~~
-- [NIP-07: `window.nostr` capability for web browsers](07.md)
-- ~~[NIP-08: Handling Mentions](08.md) --- **unrecommended**: deprecated in favor of [NIP-27](27.md)~~
-- [NIP-09: Event Deletion Request](09.md)
-- [NIP-10: Text Notes and Threads](10.md)
-- [NIP-11: Relay Information Document](11.md)
-- [NIP-13: Proof of Work](13.md)
-- [NIP-14: Subject tag in text events](14.md)
-- ~~[NIP-15: Nostr Marketplace (for resilient marketplaces)](15.md) --- **unrecommended**: too complicated, try [99](99.md) instead~~
-- [NIP-17: Private Direct Messages](17.md)
-- [NIP-18: Reposts](18.md)
-- [NIP-19: bech32-encoded entities](19.md)
+---
+
+## 列表
+
+- [NIP-01: 基本协议流程说明](01.md)
+- [NIP-02: 关注列表](02.md)
+- ~~[NIP-03: 事件的 OpenTimestamps 证明](03.md) --- **不推荐**：容易受到一种特定攻击，需要更新~~
+- ~~[NIP-04: 加密直接消息](04.md) --- **不推荐**：已弃用，请优先使用 [NIP-17](17.md)~~
+- [NIP-05: 将 Nostr 密钥映射到基于 DNS 的互联网标识符](05.md)
+- ~~[NIP-06: 从助记词种子短语派生基础密钥](06.md) --- **不推荐**：建议优先使用单个 nsec~~
+- [NIP-07: Web 浏览器的 `window.nostr` 能力](07.md)
+- ~~[NIP-08: 处理提及](08.md) --- **不推荐**：已弃用，请优先使用 [NIP-27](27.md)~~
+- [NIP-09: 事件删除请求](09.md)
+- [NIP-10: 文本笔记和会话线程](10.md)
+- [NIP-11: Relay 信息文档](11.md)
+- [NIP-13: 工作量证明](13.md)
+- [NIP-14: 文本事件中的主题标签](14.md)
+- ~~[NIP-15: Nostr 市场（用于弹性市场）](15.md) --- **不推荐**：过于复杂，请改用 [99](99.md)~~
+- [NIP-17: 私密直接消息](17.md)
+- [NIP-18: 转发](18.md)
+- [NIP-19: bech32 编码实体](19.md)
 - [NIP-21: `nostr:` URI scheme](21.md)
-- [NIP-22: Comment](22.md)
-- [NIP-23: Long-form Content](23.md)
-- [NIP-24: Extra metadata fields and tags](24.md)
-- [NIP-25: Reactions](25.md)
-- ~~[NIP-26: Delegated Event Signing](26.md) --- **unrecommended**: adds unnecessary burden for little gain~~
-- [NIP-27: Text Note References](27.md)
-- ~~[NIP-28: Public Chat](28.md) --- **unrecommended**: try [NIP-29](29.md) instead~~
-- [NIP-29: Relay-based Groups](29.md)
-- [NIP-30: Custom Emoji](30.md)
-- ~~[NIP-31: Dealing with Unknown Events](31.md) --- **unrecommended**: unnecessarily bloated~~
-- [NIP-32: Labeling](32.md)
-- [NIP-34: `git` stuff](34.md)
-- [NIP-35: Torrents](35.md)
-- [NIP-36: Sensitive Content](36.md)
-- [NIP-37: Draft Events](37.md)
-- [NIP-38: User Statuses](38.md)
-- [NIP-39: Linking Profiles to Other Platforms](39.md)
-- [NIP-40: Expiration Timestamp](40.md)
-- [NIP-42: Authentication of clients to relays](42.md)
-- [NIP-43: Relay Access Metadata and Requests](43.md)
-- [NIP-44: Encrypted Payloads (Versioned)](44.md)
-- [NIP-45: Counting results](45.md)
-- [NIP-46: Nostr Remote Signing](46.md)
+- [NIP-22: 评论](22.md)
+- [NIP-23: 长文内容](23.md)
+- [NIP-24: 额外的元数据字段和标签](24.md)
+- [NIP-25: 反应](25.md)
+- ~~[NIP-26: 委托事件签名](26.md) --- **不推荐**：收益很小却增加了不必要的负担~~
+- [NIP-27: 文本笔记引用](27.md)
+- ~~[NIP-28: 公开聊天](28.md) --- **不推荐**：请改用 [NIP-29](29.md)~~
+- [NIP-29: 基于 Relay 的群组](29.md)
+- [NIP-30: 自定义 Emoji](30.md)
+- ~~[NIP-31: 处理未知事件](31.md) --- **不推荐**：不必要地臃肿~~
+- [NIP-32: 标注](32.md)
+- [NIP-34: `git` 相关内容](34.md)
+- [NIP-35: 种子](35.md)
+- [NIP-36: 敏感内容](36.md)
+- [NIP-37: 草稿事件](37.md)
+- [NIP-38: 用户状态](38.md)
+- [NIP-39: 将个人资料链接到其他平台](39.md)
+- [NIP-40: 过期时间戳](40.md)
+- [NIP-42: Client 向 Relay 认证](42.md)
+- [NIP-43: Relay 访问元数据和请求](43.md)
+- [NIP-44: 加密载荷（带版本）](44.md)
+- [NIP-45: 结果计数](45.md)
+- [NIP-46: Nostr 远程签名](46.md)
 - [NIP-47: Nostr Wallet Connect](47.md)
-- [NIP-48: Bridged Events](48.md)
-- [NIP-49: Private Key Encryption (`ncryptsec`)](49.md)
-- [NIP-50: Search Capability](50.md)
-- [NIP-51: Lists](51.md)
-- [NIP-52: Calendar Events](52.md)
-- [NIP-53: Live Streaming and Spaces](53.md)
+- [NIP-48: 桥接事件](48.md)
+- [NIP-49: 私钥加密（`ncryptsec`）](49.md)
+- [NIP-50: 搜索能力](50.md)
+- [NIP-51: 列表](51.md)
+- [NIP-52: 日历事件](52.md)
+- [NIP-53: 直播和 Spaces](53.md)
 - [NIP-54: Wiki](54.md)
-- [NIP-55: Android Signer Application](55.md)
-- [NIP-56: Reporting](56.md)
+- [NIP-55: Android 签名器应用](55.md)
+- [NIP-56: 举报](56.md)
 - [NIP-57: Lightning Zaps](57.md)
-- [NIP-58: Badges](58.md)
-- [NIP-59: Gift Wrap](59.md)
-- [NIP-5A: Static Websites (nsites)](5A.md)
-- [NIP-60: Cashu Wallet](60.md)
+- [NIP-58: 徽章](58.md)
+- [NIP-59: 礼物包装](59.md)
+- [NIP-5A: 静态网站（nsites）](5A.md)
+- [NIP-60: Cashu 钱包](60.md)
 - [NIP-61: Nutzaps](61.md)
-- [NIP-62: Request to Vanish](62.md)
-- [NIP-64: Chess (PGN)](64.md)
-- [NIP-65: Relay List Metadata](65.md)
-- [NIP-66: Relay Discovery and Liveness Monitoring](66.md)
-- [NIP-67: EOSE Completeness Hint](67.md)
-- [NIP-68: Picture-first feeds](68.md)
-- [NIP-69: Peer-to-peer Order events](69.md)
-- [NIP-70: Protected Events](70.md)
-- [NIP-71: Video Events](71.md)
-- ~~[NIP-72: Moderated Communities](72.md) --- **unrecommended**: try [NIP-29](29.md) instead~~
-- [NIP-73: External Content IDs](73.md)
-- [NIP-75: Zap Goals](75.md)
-- [NIP-77: Negentropy Syncing](77.md)
-- [NIP-78: Application-specific data](78.md)
-- [NIP-7D: Forum Threads](7D.md)
-- [NIP-84: Highlights](84.md)
-- [NIP-85: Trusted Assertions](85.md)
-- [NIP-86: Relay Management API](86.md)
-- [NIP-87: Cashu and Fedimint Discoverability](87.md)
-- [NIP-88: Polls](88.md)
-- [NIP-89: Recommended Application Handlers](89.md)
-- ~~[NIP-90: Data Vending Machines](90.md) --- **unrecommended**: this got totally out of control, prefer use-case-specific microstandards~~
-- [NIP-92: Media Attachments Metadata (`imeta`)](92.md)
-- [NIP-94: File Metadata](94.md)
-- ~~[NIP-96: HTTP File Storage Integration](96.md) --- **unrecommended**: replaced by Blossom~~
-- [NIP-98: HTTP Auth](98.md)
-- [NIP-99: Classified Listings](99.md)
-- [NIP-A0: Voice Messages](A0.md)
-- [NIP-A4: Public Messages](A4.md)
-- [NIP-B0: Web Bookmarks](B0.md)
+- [NIP-62: 消失请求](62.md)
+- [NIP-64: 国际象棋（PGN）](64.md)
+- [NIP-65: Relay 列表元数据](65.md)
+- [NIP-66: Relay 发现和活跃性监控](66.md)
+- [NIP-67: EOSE 完整性提示](67.md)
+- [NIP-68: 图片优先的信息流](68.md)
+- [NIP-69: 点对点订单事件](69.md)
+- [NIP-70: 受保护事件](70.md)
+- [NIP-71: 视频事件](71.md)
+- ~~[NIP-72: 受审核社区](72.md) --- **不推荐**：请改用 [NIP-29](29.md)~~
+- [NIP-73: 外部内容 ID](73.md)
+- [NIP-75: Zap 目标](75.md)
+- [NIP-77: Negentropy 同步](77.md)
+- [NIP-78: 应用专用数据](78.md)
+- [NIP-7D: 论坛线程](7D.md)
+- [NIP-84: 摘录](84.md)
+- [NIP-85: 可信断言](85.md)
+- [NIP-86: Relay 管理 API](86.md)
+- [NIP-87: Cashu 和 Fedimint 可发现性](87.md)
+- [NIP-88: 投票](88.md)
+- [NIP-89: 推荐的应用处理器](89.md)
+- ~~[NIP-90: 数据售货机](90.md) --- **不推荐**：已经完全失控，建议优先使用针对具体用例的微标准~~
+- [NIP-92: 媒体附件元数据（`imeta`）](92.md)
+- [NIP-94: 文件元数据](94.md)
+- ~~[NIP-96: HTTP 文件存储集成](96.md) --- **不推荐**：已被 Blossom 取代~~
+- [NIP-98: HTTP 认证](98.md)
+- [NIP-99: 分类信息](99.md)
+- [NIP-A0: 语音消息](A0.md)
+- [NIP-A4: 公开消息](A4.md)
+- [NIP-B0: Web 书签](B0.md)
 - [NIP-B7: Blossom](B7.md)
-- ~~[NIP-BE: Nostr BLE Communications Protocol](BE.md) --- **unrecommended**: only implemented once and unclear whether it works, requires review~~
-- [NIP-C0: Code Snippets](C0.md)
-- [NIP-C7: Chats](C7.md)
+- ~~[NIP-BE: Nostr BLE 通信协议](BE.md) --- **不推荐**：只被实现过一次，且不清楚是否可用，需要审查~~
+- [NIP-C0: 代码片段](C0.md)
+- [NIP-C7: 聊天](C7.md)
 - [NIP-CC: Geocaching](CC.md)
-- ~~[NIP-EE: E2EE Messaging using MLS Protocol](EE.md) --- **unrecommended**: superseded by the [Marmot Protocol](https://github.com/marmot-protocol/marmot)~~
-- [NIP-F4: Podcasts](F4.md)
+- ~~[NIP-EE: 使用 MLS 协议的 E2EE 消息](EE.md) --- **不推荐**：已被 [Marmot Protocol](https://github.com/marmot-protocol/marmot) 取代~~
+- [NIP-F4: 播客](F4.md)
 
-## Event Kinds
+## 事件种类
 
-This table is not exhaustive. For a machine-readable registry of all known event kinds prefer <https://github.com/nostr-protocol/registry-of-kinds> (or alternative registries following the same YAML schema).
+此表并不完整。如需所有已知事件种类的机器可读注册表，请优先使用 <https://github.com/nostr-protocol/registry-of-kinds>（或遵循同一 YAML schema 的其他注册表）。
 
 | kind          | description                     | NIP                                    |
 | ------------- | ------------------------------- | -------------------------------------- |
-| `0`           | User Metadata                   | [01](01.md)                            |
-| `1`           | Short Text Note                 | [10](10.md)                            |
-| `3`           | Follows                         | [02](02.md)                            |
-| `4`           | Encrypted Direct Messages       | [04](04.md)                            |
-| `5`           | Event Deletion Request          | [09](09.md)                            |
-| `6`           | Repost                          | [18](18.md)                            |
-| `7`           | Reaction                        | [25](25.md)                            |
-| `8`           | Badge Award                     | [58](58.md)                            |
-| `9`           | Chat Message                    | [C7](C7.md)                            |
-| `11`          | Thread                          | [7D](7D.md)                            |
+| `0`           | 用户元数据                      | [01](01.md)                            |
+| `1`           | 短文本笔记                      | [10](10.md)                            |
+| `3`           | 关注                            | [02](02.md)                            |
+| `4`           | 加密直接消息                    | [04](04.md)                            |
+| `5`           | 事件删除请求                    | [09](09.md)                            |
+| `6`           | 转发                            | [18](18.md)                            |
+| `7`           | 反应                            | [25](25.md)                            |
+| `8`           | 授予徽章                        | [58](58.md)                            |
+| `9`           | 聊天消息                        | [C7](C7.md)                            |
+| `11`          | 线程                            | [7D](7D.md)                            |
 | `13`          | Seal                            | [59](59.md)                            |
-| `14`          | Direct Message                  | [17](17.md)                            |
-| `15`          | File Message                    | [17](17.md)                            |
-| `16`          | Generic Repost                  | [18](18.md)                            |
-| `17`          | Reaction to a website           | [25](25.md)                            |
-| `20`          | Picture                         | [68](68.md)                            |
-| `21`          | Video Event                     | [71](71.md)                            |
-| `22`          | Short-form Portrait Video Event | [71](71.md)                            |
-| `24`          | Public Message                  | [A4](A4.md)                            |
-| `30`          | internal reference              | [NKBIP-03]                             |
-| `31`          | external web reference          | [NKBIP-03]                             |
-| `32`          | hardcopy reference              | [NKBIP-03]                             |
-| `33`          | prompt reference                | [NKBIP-03]                             |
-| `40`          | Channel Creation                | [28](28.md)                            |
-| `41`          | Channel Metadata                | [28](28.md)                            |
-| `42`          | Channel Message                 | [28](28.md)                            |
-| `43`          | Channel Hide Message            | [28](28.md)                            |
-| `44`          | Channel Mute User               | [28](28.md)                            |
-| `54`          | Podcast Episode                 | [F4](F4.md)                            |
-| `62`          | Request to Vanish               | [62](62.md)                            |
-| `64`          | Chess (PGN)                     | [64](64.md)                            |
-| `78`          | Application-specific Data       | [78](78.md)                            |
+| `14`          | 直接消息                        | [17](17.md)                            |
+| `15`          | 文件消息                        | [17](17.md)                            |
+| `16`          | 通用转发                        | [18](18.md)                            |
+| `17`          | 对网站的反应                    | [25](25.md)                            |
+| `20`          | 图片                            | [68](68.md)                            |
+| `21`          | 视频事件                        | [71](71.md)                            |
+| `22`          | 短视频肖像事件                  | [71](71.md)                            |
+| `24`          | 公开消息                        | [A4](A4.md)                            |
+| `30`          | 内部引用                        | [NKBIP-03]                             |
+| `31`          | 外部 Web 引用                   | [NKBIP-03]                             |
+| `32`          | 硬拷贝引用                      | [NKBIP-03]                             |
+| `33`          | prompt 引用                     | [NKBIP-03]                             |
+| `40`          | 频道创建                        | [28](28.md)                            |
+| `41`          | 频道元数据                      | [28](28.md)                            |
+| `42`          | 频道消息                        | [28](28.md)                            |
+| `43`          | 隐藏频道消息                    | [28](28.md)                            |
+| `44`          | 将用户静音于频道                | [28](28.md)                            |
+| `54`          | 播客单集                        | [F4](F4.md)                            |
+| `62`          | 消失请求                        | [62](62.md)                            |
+| `64`          | 国际象棋（PGN）                 | [64](64.md)                            |
+| `78`          | 应用专用数据                    | [78](78.md)                            |
 | `443`         | KeyPackage                      | [Marmot](marmot)                       |
 | `444`         | Welcome Message                 | [Marmot](marmot)                       |
 | `445`         | Group Event                     | [Marmot](marmot)                       |
-| `818`         | Merge Requests                  | [54](54.md)                            |
-| `1018`        | Poll Response                   | [88](88.md)                            |
-| `1021`        | Bid                             | [15](15.md)                            |
-| `1022`        | Bid confirmation                | [15](15.md)                            |
-| `1234`        | Draft Checkpoint                | [37](37.md)                            |
+| `818`         | 合并请求                        | [54](54.md)                            |
+| `1018`        | 投票响应                        | [88](88.md)                            |
+| `1021`        | 出价                            | [15](15.md)                            |
+| `1022`        | 出价确认                        | [15](15.md)                            |
+| `1234`        | 草稿检查点                      | [37](37.md)                            |
 | `1040`        | OpenTimestamps                  | [03](03.md)                            |
-| `1059`        | Gift Wrap                       | [59](59.md)                            |
-| `1063`        | File Metadata                   | [94](94.md)                            |
-| `1068`        | Poll                            | [88](88.md)                            |
-| `1111`        | Comment                         | [22](22.md)                            |
-| `1222`        | Voice Message                   | [A0](A0.md)                            |
-| `1244`        | Voice Message Comment           | [A0](A0.md)                            |
-| `1311`        | Live Chat Message               | [53](53.md)                            |
-| `1337`        | Code Snippet                    | [C0](C0.md)                            |
-| `1617`        | Patches                         | [34](34.md)                            |
-| `1618`        | Pull Requests                   | [34](34.md)                            |
-| `1619`        | Pull Request Updates            | [34](34.md)                            |
-| `1621`        | Issues                          | [34](34.md)                            |
-| `1622`        | Git Replies (deprecated)        | [34](34.md)                            |
-| `1630`-`1633` | Status                          | [34](34.md)                            |
-| `1971`        | Problem Tracker                 | [nostrocket][nostrocket]               |
-| `1984`        | Reporting                       | [56](56.md)                            |
-| `1985`        | Label                           | [32](32.md)                            |
-| `1987`        | AI Embeddings / Vector lists    | [NKBIP-02]                             |
-| `2003`        | Torrent                         | [35](35.md)                            |
-| `2004`        | Torrent Comment                 | [35](35.md)                            |
-| `2022`        | Coinjoin Pool                   | [joinstr][joinstr]                     |
-| `4550`        | Community Post Approval         | [72](72.md)                            |
-| `7374`        | Reserved Cashu Wallet Tokens    | [60](60.md)                            |
-| `7375`        | Cashu Wallet Tokens             | [60](60.md)                            |
-| `7376`        | Cashu Wallet History            | [60](60.md)                            |
-| `7516`        | Geocache log                    | [CC](CC.md)                            |
-| `7517`        | Geocache proof of find          | [CC](CC.md)                            |
-| `8000`        | Add User                        | [43](43.md)                            |
-| `8001`        | Remove User                     | [43](43.md)                            |
-| `9000`-`9030` | Group Control Events            | [29](29.md)                            |
-| `9041`        | Zap Goal                        | [75](75.md)                            |
+| `1059`        | 礼物包装                        | [59](59.md)                            |
+| `1063`        | 文件元数据                      | [94](94.md)                            |
+| `1068`        | 投票                            | [88](88.md)                            |
+| `1111`        | 评论                            | [22](22.md)                            |
+| `1222`        | 语音消息                        | [A0](A0.md)                            |
+| `1244`        | 语音消息评论                    | [A0](A0.md)                            |
+| `1311`        | 直播聊天消息                    | [53](53.md)                            |
+| `1337`        | 代码片段                        | [C0](C0.md)                            |
+| `1617`        | 补丁                            | [34](34.md)                            |
+| `1618`        | Pull Request                    | [34](34.md)                            |
+| `1619`        | Pull Request 更新               | [34](34.md)                            |
+| `1621`        | Issue                           | [34](34.md)                            |
+| `1622`        | Git 回复（已弃用）              | [34](34.md)                            |
+| `1630`-`1633` | 状态                            | [34](34.md)                            |
+| `1971`        | 问题跟踪器                      | [nostrocket][nostrocket]               |
+| `1984`        | 举报                            | [56](56.md)                            |
+| `1985`        | 标签                            | [32](32.md)                            |
+| `1987`        | AI 嵌入 / 向量列表              | [NKBIP-02]                             |
+| `2003`        | 种子                            | [35](35.md)                            |
+| `2004`        | 种子评论                        | [35](35.md)                            |
+| `2022`        | Coinjoin 池                     | [joinstr][joinstr]                     |
+| `4550`        | 社区帖子批准                    | [72](72.md)                            |
+| `7374`        | 保留的 Cashu 钱包 Token         | [60](60.md)                            |
+| `7375`        | Cashu 钱包 Token                | [60](60.md)                            |
+| `7376`        | Cashu 钱包历史                  | [60](60.md)                            |
+| `7516`        | Geocache 日志                   | [CC](CC.md)                            |
+| `7517`        | Geocache 找到证明               | [CC](CC.md)                            |
+| `8000`        | 添加用户                        | [43](43.md)                            |
+| `8001`        | 移除用户                        | [43](43.md)                            |
+| `9000`-`9030` | 群组控制事件                    | [29](29.md)                            |
+| `9041`        | Zap 目标                        | [75](75.md)                            |
 | `9321`        | Nutzap                          | [61](61.md)                            |
-| `9734`        | Zap Request                     | [57](57.md)                            |
+| `9734`        | Zap 请求                        | [57](57.md)                            |
 | `9735`        | Zap                             | [57](57.md)                            |
-| `9802`        | Highlights                      | [84](84.md)                            |
-| `10000`       | Mute list                       | [51](51.md)                            |
-| `10001`       | Pin list                        | [51](51.md)                            |
-| `10002`       | Relay List Metadata             | [65](65.md), [51](51.md)               |
-| `10003`       | Bookmark list                   | [51](51.md)                            |
-| `10004`       | Communities list                | [51](51.md)                            |
-| `10005`       | Public chats list               | [51](51.md)                            |
-| `10006`       | Blocked relays list             | [51](51.md)                            |
-| `10007`       | Search relays list              | [51](51.md)                            |
-| `10008`       | Profile Badges                  | [51](51.md), [58](58.md)               |
-| `10009`       | User groups                     | [51](51.md), [29](29.md)               |
-| `10011`       | External Identities             | [39](39.md)                            |
-| `10012`       | Favorite relays list            | [51](51.md)                            |
-| `10013`       | Private event relay list        | [37](37.md)                            |
-| `10015`       | Interests list                  | [51](51.md)                            |
-| `10019`       | Nutzap Mint Recommendation      | [61](61.md)                            |
-| `10020`       | Media follows                   | [51](51.md)                            |
-| `10030`       | User emoji list                 | [51](51.md)                            |
-| `10050`       | Relay list to receive DMs       | [51](51.md), [17](17.md)               |
-| `10051`       | KeyPackage Relays List          | [Marmot][marmot]                       |
-| `10054`       | Favorite podcasts list          | [51](51.md)                            |
-| `10063`       | User server list                | [B7](B7.md)                            |
-| `10064`       | Authored podcasts list          | [51](51.md)                            |
-| `10096`       | File storage server list        | [96](96.md) (deprecated)               |
-| `10154`       | Podcast Metadata                | [F4](F4.md)                            |
-| `10166`       | Relay Monitor Announcement      | [66](66.md)                            |
-| `10312`       | Room Presence                   | [53](53.md)                            |
-| `13194`       | Wallet Info                     | [47](47.md)                            |
-| `13534`       | Membership Lists                | [43](43.md)                            |
-| `5128`        | nsite manifest snapshot         | [5A](5A.md)                            |
-| `15128`       | Root nsite manifest             | [5A](5A.md)                            |
-| `17375`       | Cashu Wallet Event              | [60](60.md)                            |
-| `22242`       | Client Authentication           | [42](42.md)                            |
-| `23194`       | Wallet Request                  | [47](47.md)                            |
-| `23195`       | Wallet Response                 | [47](47.md)                            |
+| `9802`        | 摘录                            | [84](84.md)                            |
+| `10000`       | 静音列表                        | [51](51.md)                            |
+| `10001`       | 置顶列表                        | [51](51.md)                            |
+| `10002`       | Relay 列表元数据                | [65](65.md), [51](51.md)               |
+| `10003`       | 书签列表                        | [51](51.md)                            |
+| `10004`       | 社区列表                        | [51](51.md)                            |
+| `10005`       | 公开聊天列表                    | [51](51.md)                            |
+| `10006`       | 已屏蔽 Relay 列表               | [51](51.md)                            |
+| `10007`       | 搜索 Relay 列表                 | [51](51.md)                            |
+| `10008`       | 个人资料徽章                    | [51](51.md), [58](58.md)               |
+| `10009`       | 用户群组                        | [51](51.md), [29](29.md)               |
+| `10011`       | 外部身份                        | [39](39.md)                            |
+| `10012`       | 收藏 Relay 列表                 | [51](51.md)                            |
+| `10013`       | 私有事件 Relay 列表             | [37](37.md)                            |
+| `10015`       | 兴趣列表                        | [51](51.md)                            |
+| `10019`       | Nutzap Mint 推荐                | [61](61.md)                            |
+| `10020`       | 媒体关注                        | [51](51.md)                            |
+| `10030`       | 用户 Emoji 列表                 | [51](51.md)                            |
+| `10050`       | 接收 DM 的 Relay 列表           | [51](51.md), [17](17.md)               |
+| `10051`       | KeyPackage Relay 列表           | [Marmot][marmot]                       |
+| `10054`       | 收藏播客列表                    | [51](51.md)                            |
+| `10063`       | 用户服务器列表                  | [B7](B7.md)                            |
+| `10064`       | 已创作播客列表                  | [51](51.md)                            |
+| `10096`       | 文件存储服务器列表              | [96](96.md)（已弃用）                  |
+| `10154`       | 播客元数据                      | [F4](F4.md)                            |
+| `10166`       | Relay 监控公告                  | [66](66.md)                            |
+| `10312`       | 房间在线状态                    | [53](53.md)                            |
+| `13194`       | 钱包信息                        | [47](47.md)                            |
+| `13534`       | 成员列表                        | [43](43.md)                            |
+| `5128`        | nsite manifest 快照             | [5A](5A.md)                            |
+| `15128`       | 根 nsite manifest               | [5A](5A.md)                            |
+| `17375`       | Cashu 钱包事件                  | [60](60.md)                            |
+| `22242`       | Client 认证                     | [42](42.md)                            |
+| `23194`       | 钱包请求                        | [47](47.md)                            |
+| `23195`       | 钱包响应                        | [47](47.md)                            |
 | `24133`       | Nostr Connect                   | [46](46.md)                            |
-| `24242`       | Blobs stored on mediaservers    | [B7](B7.md)                            |
-| `27235`       | HTTP Auth                       | [98](98.md)                            |
-| `28934`       | Join Request                    | [43](43.md)                            |
-| `28935`       | Invite Request                  | [43](43.md)                            |
-| `28936`       | Leave Request                   | [43](43.md)                            |
-| `30000`       | Follow sets                     | [51](51.md)                            |
-| `30002`       | Relay sets                      | [51](51.md)                            |
-| `30003`       | Bookmark sets                   | [51](51.md)                            |
-| `30004`       | Curation sets                   | [51](51.md)                            |
-| `30005`       | Video sets                      | [51](51.md)                            |
-| `30006`       | Picture sets                    | [51](51.md)                            |
-| `30007`       | Kind mute sets                  | [51](51.md)                            |
-| `30008`       | Badge sets                      | [51](51.md), [58](58.md)               |
-| `30009`       | Badge Definition                | [58](58.md)                            |
-| `30015`       | Interest sets                   | [51](51.md)                            |
-| `30017`       | Create or update a stall        | [15](15.md)                            |
-| `30018`       | Create or update a product      | [15](15.md)                            |
-| `30019`       | Marketplace UI/UX               | [15](15.md)                            |
-| `30020`       | Product sold as an auction      | [15](15.md)                            |
-| `30023`       | Long-form Content               | [23](23.md)                            |
-| `30024`       | Draft Long-form Content         | [23](23.md)                            |
-| `30030`       | Emoji sets                      | [51](51.md)                            |
-| `30040`       | Curated Publication Index       | [NKBIP-01]                             |
-| `30041`       | Curated Publication Content     | [NKBIP-01]                             |
-| `30063`       | Release artifact sets           | [51](51.md)                            |
-| `30078`       | Application-specific Data       | [78](78.md)                            |
-| `30166`       | Relay Discovery                 | [66](66.md)                            |
-| `30267`       | App curation sets               | [51](51.md)                            |
-| `30311`       | Live Event                      | [53](53.md)                            |
-| `30312`       | Interactive Room                | [53](53.md)                            |
-| `30313`       | Conference Event                | [53](53.md)                            |
-| `30315`       | User Statuses                   | [38](38.md)                            |
-| `30382`       | User Trusted Assertion          | [85](85.md)                            |
-| `30383`       | Event Trusted Assertion         | [85](85.md)                            |
-| `30384`       | Addressable Trusted Assertion   | [85](85.md)                            |
-| `30402`       | Classified Listing              | [99](99.md)                            |
-| `30403`       | Draft Classified Listing        | [99](99.md)                            |
-| `30617`       | Repository announcements        | [34](34.md)                            |
-| `30618`       | Repository state announcements  | [34](34.md)                            |
-| `30818`       | Wiki article                    | [54](54.md)                            |
-| `30819`       | Redirects                       | [54](54.md)                            |
-| `31234`       | Draft Event                     | [37](37.md)                            |
-| `31922`       | Date-Based Calendar Event       | [52](52.md)                            |
-| `31923`       | Time-Based Calendar Event       | [52](52.md)                            |
-| `31924`       | Calendar                        | [52](52.md)                            |
-| `31925`       | Calendar Event RSVP             | [52](52.md)                            |
-| `31989`       | Handler recommendation          | [89](89.md)                            |
-| `31990`       | Handler information             | [89](89.md)                            |
-| `32267`       | Software Application            |                                        |
-| `34235`       | Addressable Video Event         | [71](71.md)                            |
-| `34236`       | Addressable Short Video Event   | [71](71.md)                            |
-| `34550`       | Community Definition            | [72](72.md)                            |
-| `34128`       | Legacy nsite manifest           | [5A](5A.md) (deprecated)               |
-| `35128`       | Named nsite manifest            | [5A](5A.md)                            |
-| `38172`       | Cashu Mint Announcement         | [87](87.md)                            |
-| `38173`       | Fedimint Announcement           | [87](87.md)                            |
-| `37516`       | Geocache Listing                | [CC](CC.md)                            |
-| `37517`       | Geocache Curation List          | [CC](CC.md)                            |
-| `38383`       | Peer-to-peer Order events       | [69](69.md)                            |
-| `39000-9`     | Group metadata events           | [29](29.md)                            |
-| `39089`       | Starter packs                   | [51](51.md)                            |
-| `39092`       | Media starter packs             | [51](51.md)                            |
-| `39701`       | Web bookmarks                   | [B0](B0.md)                            |
+| `24242`       | 存储在媒体服务器上的 Blob       | [B7](B7.md)                            |
+| `27235`       | HTTP 认证                       | [98](98.md)                            |
+| `28934`       | 加入请求                        | [43](43.md)                            |
+| `28935`       | 邀请请求                        | [43](43.md)                            |
+| `28936`       | 离开请求                        | [43](43.md)                            |
+| `30000`       | 关注集合                        | [51](51.md)                            |
+| `30002`       | Relay 集合                      | [51](51.md)                            |
+| `30003`       | 书签集合                        | [51](51.md)                            |
+| `30004`       | 策展集合                        | [51](51.md)                            |
+| `30005`       | 视频集合                        | [51](51.md)                            |
+| `30006`       | 图片集合                        | [51](51.md)                            |
+| `30007`       | Kind 静音集合                   | [51](51.md)                            |
+| `30008`       | 徽章集合                        | [51](51.md), [58](58.md)               |
+| `30009`       | 徽章定义                        | [58](58.md)                            |
+| `30015`       | 兴趣集合                        | [51](51.md)                            |
+| `30017`       | 创建或更新店铺                  | [15](15.md)                            |
+| `30018`       | 创建或更新产品                  | [15](15.md)                            |
+| `30019`       | 市场 UI/UX                      | [15](15.md)                            |
+| `30020`       | 作为拍卖出售的产品              | [15](15.md)                            |
+| `30023`       | 长文内容                        | [23](23.md)                            |
+| `30024`       | 长文内容草稿                    | [23](23.md)                            |
+| `30030`       | Emoji 集合                      | [51](51.md)                            |
+| `30040`       | 策展出版物索引                  | [NKBIP-01]                             |
+| `30041`       | 策展出版物内容                  | [NKBIP-01]                             |
+| `30063`       | 发布制品集合                    | [51](51.md)                            |
+| `30078`       | 应用专用数据                    | [78](78.md)                            |
+| `30166`       | Relay 发现                      | [66](66.md)                            |
+| `30267`       | 应用策展集合                    | [51](51.md)                            |
+| `30311`       | 直播事件                        | [53](53.md)                            |
+| `30312`       | 交互式房间                      | [53](53.md)                            |
+| `30313`       | 会议事件                        | [53](53.md)                            |
+| `30315`       | 用户状态                        | [38](38.md)                            |
+| `30382`       | 用户可信断言                    | [85](85.md)                            |
+| `30383`       | 事件可信断言                    | [85](85.md)                            |
+| `30384`       | 可寻址可信断言                  | [85](85.md)                            |
+| `30402`       | 分类信息                        | [99](99.md)                            |
+| `30403`       | 分类信息草稿                    | [99](99.md)                            |
+| `30617`       | 仓库公告                        | [34](34.md)                            |
+| `30618`       | 仓库状态公告                    | [34](34.md)                            |
+| `30818`       | Wiki 文章                       | [54](54.md)                            |
+| `30819`       | 重定向                          | [54](54.md)                            |
+| `31234`       | 草稿事件                        | [37](37.md)                            |
+| `31922`       | 基于日期的日历事件              | [52](52.md)                            |
+| `31923`       | 基于时间的日历事件              | [52](52.md)                            |
+| `31924`       | 日历                            | [52](52.md)                            |
+| `31925`       | 日历事件 RSVP                   | [52](52.md)                            |
+| `31989`       | 处理器推荐                      | [89](89.md)                            |
+| `31990`       | 处理器信息                      | [89](89.md)                            |
+| `32267`       | 软件应用                        |                                        |
+| `34235`       | 可寻址视频事件                  | [71](71.md)                            |
+| `34236`       | 可寻址短视频事件                | [71](71.md)                            |
+| `34550`       | 社区定义                        | [72](72.md)                            |
+| `34128`       | 旧版 nsite manifest             | [5A](5A.md)（已弃用）                  |
+| `35128`       | 命名 nsite manifest             | [5A](5A.md)                            |
+| `38172`       | Cashu Mint 公告                 | [87](87.md)                            |
+| `38173`       | Fedimint 公告                   | [87](87.md)                            |
+| `37516`       | Geocache 列表项                 | [CC](CC.md)                            |
+| `37517`       | Geocache 策展列表               | [CC](CC.md)                            |
+| `38383`       | 点对点订单事件                  | [69](69.md)                            |
+| `39000-9`     | 群组元数据事件                  | [29](29.md)                            |
+| `39089`       | 入门包                          | [51](51.md)                            |
+| `39092`       | 媒体入门包                      | [51](51.md)                            |
+| `39701`       | Web 书签                        | [B0](B0.md)                            |
 
 [nostrocket]: https://github.com/nostrocket/NIPS/blob/main/Problems.md
 [joinstr]: https://gitlab.com/1440000bytes/joinstr/-/blob/main/NIP.md
@@ -306,57 +306,57 @@ This table is not exhaustive. For a machine-readable registry of all known event
 [marmot]: https://github.com/marmot-protocol/marmot
 
 
-## Message types
+## 消息类型
 
-### Client to Relay
+### Client 到 Relay
 
-| type    | description                                         | NIP         |
-| ------- | --------------------------------------------------- | ----------- |
-| `EVENT` | used to publish events                              | [01](01.md) |
-| `REQ`   | used to request events and subscribe to new updates | [01](01.md) |
-| `CLOSE` | used to stop previous subscriptions                 | [01](01.md) |
-| `AUTH`  | used to send authentication events                  | [42](42.md) |
-| `COUNT` | used to request event counts                        | [45](45.md) |
+| type    | description                          | NIP         |
+| ------- | ------------------------------------ | ----------- |
+| `EVENT` | 用于发布事件                         | [01](01.md) |
+| `REQ`   | 用于请求事件并订阅新的更新           | [01](01.md) |
+| `CLOSE` | 用于停止之前的订阅                   | [01](01.md) |
+| `AUTH`  | 用于发送认证事件                     | [42](42.md) |
+| `COUNT` | 用于请求事件计数                     | [45](45.md) |
 
-### Relay to Client
+### Relay 到 Client
 
-| type     | description                                             | NIP         |
-| -------- | ------------------------------------------------------- | ----------- |
-| `EOSE`   | used to notify clients all stored events have been sent | [01](01.md) |
-| `EVENT`  | used to send events requested to clients                | [01](01.md) |
-| `NOTICE` | used to send human-readable messages to clients         | [01](01.md) |
-| `OK`     | used to notify clients if an EVENT was successful       | [01](01.md) |
-| `CLOSED` | used to notify clients that a REQ was ended and why     | [01](01.md) |
-| `AUTH`   | used to send authentication challenges                  | [42](42.md) |
-| `COUNT`  | used to send requested event counts to clients          | [45](45.md) |
+| type     | description                                | NIP         |
+| -------- | ------------------------------------------ | ----------- |
+| `EOSE`   | 用于通知 client 所有已存储事件都已发送     | [01](01.md) |
+| `EVENT`  | 用于向 client 发送其请求的事件             | [01](01.md) |
+| `NOTICE` | 用于向 client 发送人类可读消息             | [01](01.md) |
+| `OK`     | 用于通知 client 某个 EVENT 是否成功        | [01](01.md) |
+| `CLOSED` | 用于通知 client 某个 REQ 已结束及其原因    | [01](01.md) |
+| `AUTH`   | 用于发送认证挑战                           | [42](42.md) |
+| `COUNT`  | 用于向 client 发送请求的事件计数           | [45](45.md) |
 
-## Criteria for acceptance in this repository
+## 本仓库接收 NIP 的标准
 
-1. They should be fully implemented in at least two clients and one relay -- when applicable.
-2. They should make sense.
-3. They should be optional and backwards-compatible: care must be taken such that clients and relays that choose to not implement them do not stop working when interacting with the ones that choose to.
-4. There should be no more than one way of doing the same thing.
-5. Other rules will be made up when necessary.
+1. 在适用时，它们应至少被两个 client 和一个 relay 完整实现。
+2. 它们应该是合理的。
+3. 它们应该是可选且向后兼容的：必须谨慎设计，使选择不实现它们的 client 和 relay 在与选择实现它们的软件交互时不会停止工作。
+4. 同一件事不应该有超过一种做法。
+5. 其他规则会在必要时制定。
 
-## Is this repository a centralizing factor?
+## 这个仓库是中心化因素吗？
 
-To promote interoperability, we need standards that everybody can follow, and we need them to define a **single way of doing each thing** without ever hurting **backwards-compatibility**, and for that purpose there is no way around getting everybody to agree on the same thing and keep a centralized index of these standards. However the fact that such an index exists doesn't hurt the decentralization of Nostr. _At any point the central index can be challenged if it is failing to fulfill the needs of the protocol_ and it can migrate to other places and be maintained by other people.
+为了促进互操作性，我们需要所有人都能遵循的标准，也需要这些标准定义出**每件事的唯一做法**，同时绝不损害**向后兼容性**。为此，无法绕开让大家就同一件事达成一致，并维护一个中心化的标准索引。不过，这样一个索引的存在并不会损害 Nostr 的去中心化。_只要中心索引无法满足协议需求，它随时都可以受到挑战_，并且可以迁移到其他地方，由其他人维护。
 
-It can even fork into multiple versions, and then some clients would go one way, others would go another way, and some clients would adhere to both competing standards. This would hurt the simplicity, openness and interoperability of Nostr a little, but everything would still work in the short term.
+它甚至可以 fork 成多个版本，然后一些 client 走一条路，另一些 client 走另一条路，还有一些 client 同时遵循相互竞争的标准。这会稍微损害 Nostr 的简洁性、开放性和互操作性，但短期内一切仍然可以工作。
 
-There is a list of notable Nostr software developers who have commit access to this repository, but that exists mostly for practical reasons, as by the nature of the thing we're dealing with the repository owner can revoke membership and rewrite history as they want -- and if these actions are unjustified or perceived as bad or evil the community must react.
+有一份知名 Nostr 软件开发者列表，他们拥有本仓库的提交权限，但这主要出于实践上的原因。由于我们处理的事物本身具有这种性质，仓库所有者可以按自己的意愿撤销成员资格并重写历史；如果这些行为没有正当理由，或被认为是糟糕甚至恶意的，社区就必须作出反应。
 
-## How this repository works
+## 这个仓库如何运作
 
-Standards may emerge in two ways: the first way is that someone starts doing something, then others copy it; the second way is that someone has an idea of a new standard that could benefit multiple clients and the protocol in general without breaking **backwards-compatibility** and the principle of having **a single way of doing things**, then they write that idea and submit it to this repository, other interested parties read it and give their feedback, then once most people reasonably agree we codify that in a NIP which client and relay developers that are interested in the feature can proceed to implement.
+标准可以通过两种方式出现：第一种是有人开始做某件事，然后其他人复制它；第二种是有人提出一个新标准的想法，这个想法能够让多个 client 和整个协议受益，同时不破坏**向后兼容性**以及**每件事只有一种做法**的原则。然后他们把这个想法写下来并提交到本仓库，其他感兴趣的人阅读并给出反馈。等大多数人形成合理共识后，我们将其编纂为一个 NIP，感兴趣的 client 和 relay 开发者就可以继续实现该功能。
 
-These two ways of standardizing things are supported by this repository. Although the second is preferred, an effort will be made to codify standards emerged outside this repository into NIPs that can be later referenced and easily understood and implemented by others -- but obviously as in any human system discretion may be applied when standards are considered harmful.
+本仓库支持这两种标准化方式。虽然更倾向于第二种方式，但我们也会努力把本仓库之外出现的标准编纂成 NIP，使其之后可以被引用，也更容易被其他人理解和实现。不过显然，和任何由人组成的系统一样，当某些标准被认为有害时，也可能需要酌情处理。
 
-## License
+## 许可证
 
-All NIPs are public domain.
+所有 NIP 都属于公有领域。
 
-## Contributors
+## 贡献者
 
 <a align="center" href="https://github.com/nostr-protocol/nips/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=nostr-protocol/nips" />

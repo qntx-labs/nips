@@ -1,16 +1,16 @@
 NIP-CC
 ======
 
-Geocaching Events
------------------
+寻宝（Geocaching）事件
+---------------------
 
 `draft` `optional`
 
-This NIP defines event kinds for geocaching on Nostr. These events allow users to create, share, and log geocaches in a decentralized manner.
+本 NIP 定义了在 Nostr 上进行 geocaching（寻宝）的 event kind。这些 event 允许用户以去中心化方式创建、分享和记录 geocache。
 
-## Geocache Listing Event (Kind 37516)
+## Geocache 列表事件（Kind 37516）
 
-Geocache listing events are addressable events of kind `37516` with the following structure:
+Geocache 列表 event 是 kind `37516` 的 addressable event，结构如下：
 
 ```json
 {
@@ -34,38 +34,38 @@ Geocache listing events are addressable events of kind `37516` with the followin
 }
 ```
 
-Listing events require all information about the cache and information relevant to finding the cache. These include the `name`, location (`g`), difficulty (`D`) and terrain (`T`) scores, and size (`S`). The type of cache (`t`) is optional and defaults to `traditional` if not specified.
+列表 event 需要包含有关 cache 的所有信息，以及寻找 cache 所需的相关信息。这些信息包括 `name`、位置（`g`）、难度（`D`）和地形（`T`）评分，以及尺寸（`S`）。cache 类型（`t`）是可选的；如果未指定，默认值为 `traditional`。
 
-Cache types are determined by individual clients, with common types including `traditional`, `multi`, and `mystery`. Clients should decide which cache types they support based on their implementation needs.
+cache 类型由各个客户端决定，常见类型包括 `traditional`、`multi` 和 `mystery`。客户端应根据自身实现需求决定支持哪些 cache 类型。
 
-These requirements are well-known and follow existing standards, such as those outlined on [geocaching.com](https://www.geocaching.com/help/index.php?pg=kb.chapter&id=97).
+这些要求是广为人知的，并遵循现有标准，例如 [geocaching.com](https://www.geocaching.com/help/index.php?pg=kb.chapter&id=97) 上列出的标准。
 
-These events are assumed to be owned by the submitter of the cache, and core details should be maintained by that submitter. However, community logs should also provide context on the current state and validity of the cache.
+这些 event 被假定由 cache 提交者拥有，核心细节应由该提交者维护。不过，社区日志也应提供有关 cache 当前状态和有效性的上下文。
 
-### Content
+### Content 字段
 
-The content field contains the cache description and any additional information about the cache.
+content 字段包含 cache 描述以及有关该 cache 的任何附加信息。
 
-### Tags
+### 标签
 
-- `d` (required) - unique identifier for the cache
-- `name` (required) - human-readable name for the cache  
-- `g` (required) - geohash of cache location. To allow for a proximity search, include multiple geohash tags at different precision levels (3-9 characters)
-- `D` (required) - integer 1-5 indicating puzzle/finding difficulty (indexed)
-- `T` (required) - integer 1-5 indicating terrain difficulty (indexed)
-- `S` (required) - one of: `micro`, `small`, `regular`, `large`, `other` (indexed)
-- `t` (optional) - cache type, with common values including: `traditional`, `multi`, `mystery`. Defaults to `traditional` if not specified
-- `n` (optional) - type modifier(s) that affect lifecycle, claim semantics, or prize nature. See [Type Modifiers](#type-modifiers). Multiple `n` tags MAY be present, but at most one per modifier category
-- `hint` (optional) - plaintext hint to help find the cache
-- `mission` (optional) - plaintext "Key Quest" mission that finders are expected to complete to legitimately claim the cache (e.g. a passphrase, riddle answer, or item to bring). A treasure MUST NOT include more than one `mission` tag; if multiple are present, clients SHOULD use the first and ignore the rest. When present, clients SHOULD restrict found-log submission to finders who have proof of physical presence (typically the verification key from the cache location). Completions of the mission MAY be recorded as [NIP-GD](NIP-GD.md) Good Deed events whose `a` tag references the cache
-- `image` (optional) - image URLs related to the cache
-- `r` (optional) - preferred relay URLs for logs
-- `verification` (optional) - hex-encoded public key for verifying finds at this cache
-- `F` (optional) - locks in the first-to-find winner. Only valid when the treasure carries the `first-to-find` `n` modifier. Format: `["F", "<winner-pubkey-hex>"]`. See [Type Modifiers › `first-to-find`](#claim-semantics). At most one `F` tag SHOULD be present
+- `d`（必需）- cache 的唯一标识符
+- `name`（必需）- cache 的人类可读名称
+- `g`（必需）- cache 位置的 geohash。为了允许邻近搜索，请包含不同精度级别（3-9 个字符）的多个 geohash 标签
+- `D`（必需）- 表示谜题/寻找难度的 1-5 整数（可索引）
+- `T`（必需）- 表示地形难度的 1-5 整数（可索引）
+- `S`（必需）- 下列之一：`micro`、`small`、`regular`、`large`、`other`（可索引）
+- `t`（可选）- cache 类型，常见值包括：`traditional`、`multi`、`mystery`。如果未指定，默认值为 `traditional`
+- `n`（可选）- 影响生命周期、认领语义或奖品性质的类型修饰符。见[类型修饰符](#type-modifiers)。可以存在多个 `n` 标签，但每个修饰符类别最多一个
+- `hint`（可选）- 帮助寻找 cache 的明文提示
+- `mission`（可选）- 明文“Key Quest”任务，寻找者应完成该任务以合法认领 cache（例如密码短语、谜语答案或要携带的物品）。一个 treasure MUST NOT 包含超过一个 `mission` 标签；如果存在多个，客户端 SHOULD 使用第一个并忽略其余标签。当存在该标签时，客户端 SHOULD 将 found-log 提交限制为具有物理到场证明的寻找者（通常是 cache 位置处的验证密钥）。任务完成情况 MAY 记录为 [NIP-GD](NIP-GD.md) Good Deed event，其 `a` 标签引用该 cache
+- `image`（可选）- 与 cache 相关的图片 URL
+- `r`（可选）- 用于日志的首选 relay URL
+- `verification`（可选）- 用于验证在此 cache 处找到记录的十六进制编码公钥
+- `F`（可选）- 锁定 first-to-find 获胜者。仅当 treasure 带有 `first-to-find` `n` 修饰符时有效。格式：`["F", "<winner-pubkey-hex>"]`。见[类型修饰符 › `first-to-find`](#claim-semantics)。SHOULD 最多存在一个 `F` 标签
 
-## Found Log Event (Kind 7516)
+## Found Log 事件（Kind 7516）
 
-Found log events record successful visits to geocaches:
+Found log event 记录对 geocache 的成功访问：
 
 ```json
 {
@@ -77,15 +77,15 @@ Found log events record successful visits to geocaches:
 }
 ```
 
-### Tags
+### 标签
 
-- `a` (required) - reference to the geocache being logged
-- `image` (optional) - photos from the visit
-- `verification` (optional) - embedded verification event (see Verified Finds section)
+- `a`（必需）- 对正在记录的 geocache 的引用
+- `image`（可选）- 访问时拍摄的照片
+- `verification`（可选）- 嵌入式验证 event（见 Verified Finds 小节）
 
-## Comment Log Events (Kind 1111)
+## 评论日志事件（Kind 1111）
 
-Non-found logs use comment events (kind `1111`) following NIP-22 comment structure:
+未找到类日志使用 comment event（kind `1111`），遵循 NIP-22 评论结构：
 
 ```json
 {
@@ -103,22 +103,22 @@ Non-found logs use comment events (kind `1111`) following NIP-22 comment structu
 }
 ```
 
-These events capture failures, notes, and status-related information about the cache via human reporting, following the NIP-22 comment threading model where the geocache listing is both the root and parent content.
+这些 event 按照 NIP-22 评论线程模型，通过人工报告捕获关于 cache 的失败、备注和状态相关信息；在该模型中，geocache 列表同时是根内容和父内容。
 
-Comment log types include `dnf` (did not find), `note` (helpful or neutral context), and `maintenance` (cache needs attention). If no `t` tag is present, the comment is assumed to be a general note.
+评论日志类型包括 `dnf`（did not find，未找到）、`note`（有帮助或中性的上下文）以及 `maintenance`（cache 需要维护）。如果不存在 `t` 标签，则该评论被假定为一般备注。
 
-Owners of the cache can officially retire caches using an `archived` tag value in the tag `t`, thus allowing the cache's history to be preserved without fully deleting it.
+cache 所有者可以使用 `t` 标签中的 `archived` 标签值正式归档 cache，从而在不完全删除的情况下保留 cache 历史。
 
-### Tags
+### 标签
 
-The `A`/`K`/`P` (root) and `a`/`k`/`p` (parent) tags follow [NIP-22](https://github.com/nostr-protocol/nips/blob/master/22.md). For these top-level comments, the root and parent are identical: they reference the geocache listing (`37516:<pubkey>:<d-tag>`), kind `37516`, and the cache owner's pubkey.
+`A`/`K`/`P`（root）和 `a`/`k`/`p`（parent）标签遵循 [NIP-22](https://github.com/nostr-protocol/nips/blob/master/22.md)。对于这些顶级评论，root 和 parent 相同：它们引用 geocache 列表（`37516:<pubkey>:<d-tag>`）、kind `37516` 以及 cache 所有者的 pubkey。
 
-- `t` (optional) - log type: `dnf`, `note`, `maintenance`, `archived`. If omitted, assumed to be `note`
-- `image` (optional) - photos from the visit
+- `t`（可选）- 日志类型：`dnf`、`note`、`maintenance`、`archived`。如果省略，假定为 `note`
+- `image`（可选）- 访问时拍摄的照片
 
-## Geocache Verification Event (Kind 7517)
+## Geocache 验证事件（Kind 7517）
 
-Verification events provide cryptographic proof that someone physically located a geocache. These events are signed by the cache's verification private key.
+验证 event 提供某人实际到达 geocache 的加密证明。这些 event 由 cache 的验证私钥签名。
 
 ```json
 {
@@ -130,89 +130,93 @@ Verification events provide cryptographic proof that someone physically located 
 }
 ```
 
-### Content
+### Content 字段
 
-The content field must follow the static format: `"Geocache verification for <finder-npub>"` where `<finder-npub>` is the NIP-19 encoded public key (npub) of the person who found the cache.
+content 字段必须遵循静态格式：`"Geocache verification for <finder-npub>"`，其中 `<finder-npub>` 是找到该 cache 的人的 NIP-19 编码公钥（npub）。
 
-### Tags
+### 标签
 
-- `a` (required) - composite identifier containing the finder's pubkey in hex format and the geocache naddr being verified
+- `a`（必需）- 复合标识符，包含寻找者的十六进制 pubkey 以及正在验证的 geocache naddr
 
-### Usage
+### 用法
 
-Verification events are created when a finder obtains access to the cache's verification private key (typically via QR code at the cache location). The event must be signed by the cache's verification private key and can be:
+当寻找者获得 cache 的验证私钥访问权限时（通常通过 cache 位置处的二维码），会创建验证 event。该 event 必须由 cache 的验证私钥签名，并且可以：
 
-1. Embedded in the `verification` tag as a JSON string in the Verified Found Log event (kind 7516).
-2. Published to relays as standalone events
-3. Both embedded and published for redundancy
+1. 作为 JSON 字符串嵌入到 Verified Found Log event（kind 7516）的 `verification` 标签中。
+2. 作为独立 event 发布到 relay。
+3. 同时嵌入和发布，以实现冗余。
 
-## Verified Finds
+## 已验证找到记录
 
-Geocaches with verification enabled can provide cryptographic proof that a finder physically located the cache. This is accomplished through a verification event (kind 7517) signed by the cache's verification key.
+启用验证的 geocache 可以提供寻找者实际到达该 cache 的加密证明。这通过由 cache 验证密钥签名的验证 event（kind 7517）实现。
 
-### Verification Process
+### 验证流程
 
-When a cache has a `verification` tag containing a public key, finders can create a verified log by:
+当 cache 具有包含公钥的 `verification` 标签时，寻找者可以通过以下方式创建已验证日志：
 
-1. Obtaining the cache's verification private key (typically via QR code at the cache location)
-2. Creating a verification event (kind 7517) signed by this key
-3. Embedding the verification event in their log entry
+1. 获取 cache 的验证私钥（通常通过 cache 位置处的二维码）
+2. 创建由该密钥签名的验证 event（kind 7517）
+3. 将验证 event 嵌入到自己的日志条目中
 
-### Verification Validation
+### 验证校验
 
-To validate a verified find:
+要校验一次已验证找到记录：
 
-1. Check that the verification event is signed by the expected verification public key
-2. Verify that the finder pubkey in the `a` tag matches the log author
-3. Confirm the geocache naddr in the `a` tag correctly references the target cache
-4. Validate the event signature using standard Nostr verification
+1. 检查验证 event 是否由预期的验证公钥签名
+2. 验证 `a` 标签中的寻找者 pubkey 是否与日志作者匹配
+3. 确认 `a` 标签中的 geocache naddr 正确引用目标 cache
+4. 使用标准 Nostr 验证方式校验 event 签名
 
-## Type Modifiers
+<a id="type-modifiers"></a>
 
-Geocache listings MAY include one or more `n` tags that classify the geocache with additional type modifiers. Unlike the `t` cache-type tag (which describes *how* a cache is found), `n` modifiers describe *how the cache behaves* once published — its lifecycle, claim semantics, or prize nature.
+## 类型修饰符
 
-The `mission` tag is also a type modifier in the broader sense, but it uses its own dedicated tag because it carries a payload (the mission text). Clients SHOULD treat `mission` and `n` modifiers consistently for display purposes (badges, filters, etc.).
+Geocache 列表 MAY 包含一个或多个 `n` 标签，用于通过额外类型修饰符对 geocache 进行分类。不同于描述 cache *如何被找到*的 `t` cache-type 标签，`n` 修饰符描述 cache 发布后*如何表现*，即其生命周期、认领语义或奖品性质。
 
-### Rules
+`mission` 标签在更广义上也是一种类型修饰符，但它使用自己的专用标签，因为它携带 payload（任务文本）。客户端 SHOULD 在展示用途（徽章、过滤器等）上以一致方式处理 `mission` 和 `n` 修饰符。
 
-1. Each modifier value belongs to exactly one **category** (see below).
-2. A geocache SHOULD include at most one `n` tag per category. If multiple values from the same category are present, clients SHOULD use the first occurrence and ignore the rest.
-3. Modifiers from different categories compose freely. Any combination is valid unless a specific modifier's definition states otherwise.
-4. Clients SHOULD ignore `n` values they do not recognize, allowing forward compatibility as new modifiers are defined.
+### 规则
 
-### Categories and Modifiers
+1. 每个修饰符值只属于一个**类别**（见下文）。
+2. 一个 geocache SHOULD 在每个类别中最多包含一个 `n` 标签。如果同一类别中存在多个值，客户端 SHOULD 使用第一次出现的值并忽略其余值。
+3. 来自不同类别的修饰符可以自由组合。除非某个特定修饰符的定义另有说明，否则任意组合都是有效的。
+4. 客户端 SHOULD 忽略无法识别的 `n` 值，以便在定义新修饰符时保持向前兼容。
 
-#### Claim semantics
+### 类别和修饰符
 
-Modifiers that affect how claims on the treasure are interpreted.
+<a id="claim-semantics"></a>
 
-- `first-to-find` — Single-claim geocache listing. The first verified found log (kind 7516 with valid embedded kind 7517) constitutes the exclusive claim. Subsequent verified found logs remain valid records of physical presence at the location but do not constitute additional claims. Clients SHOULD render the geocache listing as effectively archived once any valid verified found log exists, hiding find-submission affordances and displaying the winning finder prominently. Requires a `verification` tag on the geocache listing event.
+#### 认领语义
 
-  Determining the winning log (provisional, before lock-in):
-  - The winning log is the verified found log with the earliest `created_at` value.
-  - Ties on `created_at` are broken by ascending lexicographic comparison of the event `id`.
-  - All verified logs are evidence of physical presence (QR access was required to produce them); the exclusive claim is attributed only to the earliest one.
+影响 treasure 认领解释方式的修饰符。
 
-  Locking in the winner (`F` tag):
-  - Once the geocache listing creator has confirmed the claim, the creator SHOULD publish a new revision of the geocache listing event that BOTH archives the listing (adds `["t", "archived"]`) AND locks the winner in by appending an `F` tag:
+- `first-to-find` — 单次认领 geocache 列表。第一个已验证 found log（带有有效嵌入式 kind 7517 的 kind 7516）构成独占认领。后续已验证 found log 仍然是到达该位置的有效记录，但不构成额外认领。一旦存在任何有效的已验证 found log，客户端 SHOULD 将 geocache 列表渲染为实际上已归档，隐藏提交找到记录的交互，并突出显示获胜寻找者。要求 geocache 列表 event 上存在 `verification` 标签。
+
+  确定获胜日志（锁定前的暂定规则）：
+  - 获胜日志是 `created_at` 值最早的已验证 found log。
+  - 如果 `created_at` 相同，则通过 event `id` 的升序字典序比较打破平局。
+  - 所有已验证日志都是物理到场的证据（生成它们需要访问二维码）；独占认领只归属于最早的一条。
+
+  锁定获胜者（`F` 标签）：
+  - 一旦 geocache 列表创建者确认认领，创建者 SHOULD 发布 geocache 列表 event 的新修订版，该修订版同时归档列表（添加 `["t", "archived"]`）并通过追加 `F` 标签锁定获胜者：
     `["F", "<winner-pubkey-hex>"]`
-  - The value is the winning finder's pubkey (lowercase hex). The specific winning verified found log is recoverable by querying for verified found logs whose `a` tag references this treasure and whose author matches the `F` pubkey.
-  - At most one `F` tag SHOULD be present. If multiple are present, clients SHOULD use the first.
-  - When an `F` tag is present, clients MUST attribute the exclusive claim to the pubkey in the `F` tag, regardless of which verified found log currently appears earliest. Because `created_at` is author-supplied and forgeable, this protects the locked-in claim from being displaced by a later log carrying a forged earlier timestamp.
+  - 该值是获胜寻找者的 pubkey（小写十六进制）。可以通过查询引用该 treasure 的 `a` 标签且作者匹配 `F` pubkey 的已验证 found log，恢复具体的获胜日志。
+  - SHOULD 最多存在一个 `F` 标签。如果存在多个，客户端 SHOULD 使用第一个。
+  - 当存在 `F` 标签时，客户端 MUST 将独占认领归属于 `F` 标签中的 pubkey，无论当前哪条已验证 found log 看起来最早。由于 `created_at` 由作者提供且可伪造，这可以防止已锁定的认领被后来带有伪造更早时间戳的日志取代。
 
-#### Prize nature
+#### 奖品性质
 
-Modifiers that describe what the physical treasure IS.
+描述实体 treasure *是什么*的修饰符。
 
-- `art` — The geocache itself is a physical work of art (a print, sculpture, sticker, zine, painted object, mural, installation, etc.). Whether the work is takeable, viewable in place, photographable only, or otherwise interacted with is determined by other modifiers and by the treasure's `content` description.
+- `art` — geocache 本身是一件实体艺术作品（版画、雕塑、贴纸、zine、绘制物、壁画、装置等）。该作品是否可以带走、原地观看、只能拍照，或以其他方式互动，由其他修饰符以及 treasure 的 `content` 描述决定。
 
-### Forward Compatibility
+### 向前兼容
 
-New modifiers MAY be defined in future revisions of this NIP or in supplementary NIPs. New categories MAY also be introduced. Clients implementing this NIP SHOULD ignore unknown `n` values rather than rejecting the event.
+未来版本的本 NIP 或补充 NIP 中 MAY 定义新的修饰符。也 MAY 引入新的类别。实现本 NIP 的客户端 SHOULD 忽略未知的 `n` 值，而不是拒绝该 event。
 
-## Geocache Curation List Event (Kind 37517)
+## Geocache 策展列表事件（Kind 37517）
 
-Curation list events are addressable events of kind `37517` that group geocaches into curated collections. Clients may present these as adventures, trails, treasure hunts, or any other themed experience.
+策展列表 event 是 kind `37517` 的 addressable event，用于将 geocache 组织进策展集合。客户端可以将这些集合呈现为冒险、路线、寻宝活动或任何其他主题体验。
 
 ```json
 {
@@ -232,37 +236,37 @@ Curation list events are addressable events of kind `37517` that group geocaches
 }
 ```
 
-### Content
+### Content 字段
 
-The content field contains the full description of the curation list — rules, tips, narrative, or any other context the creator wants to provide.
+content 字段包含策展列表的完整描述，包括规则、提示、叙事，或创建者希望提供的任何其他上下文。
 
-### Tags
+### 标签
 
-- `d` (required) - unique identifier for the list
-- `title` (required) - human-readable name for the list
-- `a` (required, 1+) - references to geocache listing events (kind 37516 or 37515). Order is preserved and meaningful
-- `description` (optional) - short summary shown in browse/card views
-- `image` (optional) - banner image URL
-- `g` (optional) - geohash of list center location. Include multiple precision levels (3-6 characters) for discovery
-- `theme` (optional) - default page theme for the list. Clients should apply this theme when displaying the list, unless the user has explicitly chosen a different theme. Supported values: `adventure`, `mojave`
-- `map` (optional) - default map style for the list. Clients should use this as the initial map style when displaying the list, but allow the user to change it. Supported values: `original`, `dark`, `satellite`, `adventure`
+- `d`（必需）- 列表的唯一标识符
+- `title`（必需）- 列表的人类可读名称
+- `a`（必需，1+）- 对 geocache 列表 event（kind 37516 或 37515）的引用。顺序会被保留且具有意义
+- `description`（可选）- 在浏览/卡片视图中显示的简短摘要
+- `image`（可选）- 横幅图片 URL
+- `g`（可选）- 列表中心位置的 geohash。为便于发现，请包含多个精度级别（3-6 个字符）
+- `theme`（可选）- 列表的默认页面主题。显示列表时，客户端应应用该主题，除非用户已明确选择其他主题。支持值：`adventure`、`mojave`
+- `map`（可选）- 列表的默认地图样式。客户端显示列表时应将其作为初始地图样式，但允许用户更改。支持值：`original`、`dark`、`satellite`、`adventure`
 
-### Cross-Author References
+### 跨作者引用
 
-Curation lists can reference any public geocache regardless of author. The `a` tags use standard Nostr addressable event coordinates (`<kind>:<pubkey>:<d-tag>`), allowing a single list to span geocaches from multiple creators.
+策展列表可以引用任何公开 geocache，而不受作者限制。`a` 标签使用标准 Nostr addressable event 坐标（`<kind>:<pubkey>:<d-tag>`），允许单个列表横跨来自多个创建者的 geocache。
 
-## Clients
+## 客户端
 
-For the best Geocaching experience, clients implementing geocaching support should:
+为了获得最佳 Geocaching 体验，实现 geocaching 支持的客户端应：
 
-- Support hint encoding, such as ROT13, to prevent spoilers.
-- Determine cache status from recent log patterns. Multiple DNF entries and/or maintenance notes would indicate an issue with the cache.
-- Publish logs to relays specified in the cache's `r` tags when available.
-- Validate geohash precision meets minimum requirements (8+ characters, 9+ for micro caches) before accepting cache submissions.
+- 支持提示编码（例如 ROT13），以防止剧透。
+- 从最近的日志模式判断 cache 状态。多个 DNF 条目和/或维护备注将表明该 cache 存在问题。
+- 在可用时，将日志发布到 cache 的 `r` 标签指定的 relay。
+- 在接受 cache 提交前，校验 geohash 精度是否满足最低要求（8+ 个字符，micro cache 为 9+）。
 
-## Examples
+## 示例
 
-### Basic Cache
+### 基本 Cache
 
 ```json
 {
@@ -288,7 +292,7 @@ For the best Geocaching experience, clients implementing geocaching support shou
 }
 ```
 
-### Verified Cache
+### 已验证 Cache
 
 ```json
 {
@@ -308,7 +312,7 @@ For the best Geocaching experience, clients implementing geocaching support shou
 }
 ```
 
-### Cache with Key Quest
+### 带 Key Quest 的 Cache
 
 ```json
 {
@@ -329,9 +333,9 @@ For the best Geocaching experience, clients implementing geocaching support shou
 }
 ```
 
-### First-to-Find Art
+### First-to-Find 艺术品
 
-A single-claim treasure where the cache itself is a physical artwork. The first verified finder is the exclusive claimant; how the work is fulfilled (taken home, photographed, etc.) is described in the cache content.
+一个单次认领 treasure，其中 cache 本身是一件实体艺术品。第一个已验证寻找者是独占认领者；作品如何交付（带回家、拍照等）由 cache content 描述。
 
 ```json
 {
@@ -354,7 +358,7 @@ A single-claim treasure where the cache itself is a physical artwork. The first 
 }
 ```
 
-### Found Log
+### Found Log 记录
 
 ```json
 {
@@ -384,7 +388,7 @@ A single-claim treasure where the cache itself is a physical artwork. The first 
 }
 ```
 
-### Note Log
+### Note Log 记录
 
 ```json
 {
@@ -402,7 +406,7 @@ A single-claim treasure where the cache itself is a physical artwork. The first 
 }
 ```
 
-### Verification Event
+### 验证事件
 
 ```json
 {
@@ -417,7 +421,7 @@ A single-claim treasure where the cache itself is a physical artwork. The first 
 }
 ```
 
-### Verified Found Log
+### 已验证 Found Log
 
 ```json
 {
@@ -430,7 +434,7 @@ A single-claim treasure where the cache itself is a physical artwork. The first 
 }
 ```
 
-### Geocache Curation List
+### Geocache 策展列表
 
 ```json
 {
